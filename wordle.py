@@ -1,0 +1,124 @@
+# wordle
+import random
+
+with open('my_words.txt', 'r') as file:
+    word_list = file.read().split('\n')
+    
+word_list = [i for i in word_list if len(i) == 5]
+
+class Wordle:
+    
+    def __init__(self):
+        self.word_list = word_list
+        self.attempts = 1
+        self.word = random.choice(self.word_list)
+        self.guesses = []
+        self.not_in_word = set()
+        self.guess = ''
+        self.in_word = []
+        self.hidden = ['_','_','_','_','_']
+        self.not_in = set()
+        
+    def reset(self):
+        self.attempts = 1
+        self.word = random.choice(self.word_list)
+        self.guesses = []
+        self.not_in_word = set()
+        self.guess = ''
+        self.in_word = []
+        self.hidden = ['_','_','_','_','_']
+        self.not_in = set()
+                       
+    def print_menu(self):
+        print('''
+                            Welcome to Wordle! The world popular word guessing game. 
+                            --------------------------------------------------------
+            
+    Guess the secret 5-letter word in five attempts. Begin by typing in any 5-letter word and pressing enter.
+
+    - Letters in the correct position of the word will show in the word.
+    - Letters in the word but in the wrong postion will be shown in the word list.
+    - If your guess is not in the wordle word list, you will be prompted to enter a different word with no penalty.
+
+        Options
+
+        1. Play
+        2. Quit
+    ''')
+        
+    def check_menu_input(self, number):
+        '''Takes a number as input and continually asks the user for numeric input in the range
+        until valid input received. returns int as str. '''
+        choices = [str(i) for i in range(1,number+1)]
+        while True:
+            choice = input('Choose an option. ')
+            if choice in choices:
+                break
+        return choice        
+
+    def definite_match(self):
+        '''takes word and guess as input and returns correct letter
+        position matches and a list of letters in word but not correct postion.'''
+        editable_word = list(self.word).copy()
+        editable_guess = list(self.guess).copy()
+        for i in range(5):
+            if self.guess[i] == self.word[i]:
+                self.hidden[i] = self.word[i]
+                editable_guess.remove(self.guess[i])
+                editable_word.remove(self.guess[i])
+        for letter in editable_guess:
+            if letter not in editable_word:
+                self.not_in.update(letter)
+        for letter in editable_guess:
+            if letter in editable_word:
+                self.in_word.append(letter)
+                editable_word.remove(letter)
+
+    def check_answer(self):
+        if ''.join(self.hidden) == self.word:
+            return True
+        return False
+        
+    def check_guess_input(self):
+        while True:
+            self.guess = input('Guess: ').lower()
+            if self.guess not in self.word_list:
+                print(f'{self.guess} is not in the wordle word list.')
+                continue
+            break
+        return self.guess
+
+    def main(self):
+        running = True
+        while running:
+            self.print_menu()       
+            choice = self.check_menu_input(2)
+            if choice == '2':
+                running = False
+            if choice == '1':
+                while self.attempts < 6:
+                    print(f'Attempt {self.attempts} of 5. ', end='')
+                    self.check_guess_input()
+                    self.definite_match()
+                    if self.check_answer():
+                        print(f'You win! the word is {self.word}.')
+                        self.reset()
+                        break
+                    elif not self.check_answer() and self.attempts == 5:
+                        print(f'You loose. The word was {self.word}.')
+                        self.reset()
+                        break
+                    else:
+                        self.guesses.append(self.guess)
+                        self.not_in_word.update(self.not_in) 
+                        print('Guessed words: ', ', '.join(self.guesses))
+                        print('Guessed letters that are not in the word: ', ', '.join(self.not_in_word))
+                        print('In word but in wrong position: ', ', '.join(self.in_word))
+                        self.in_word.clear()
+                        print('Secret Word: ', ' '.join(self.hidden))
+                        print('=======================================================')
+                        print()
+                        self.attempts += 1
+                        
+if __name__ == '__main__':
+    Wordle().main()

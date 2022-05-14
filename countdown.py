@@ -31,6 +31,7 @@ class Conundrum:
         mixed = list(self.word)
         random.shuffle(mixed)
         self.scrambled = ''.join(mixed)
+        
 # ======================Declare CountdownSinglePlayer Class=======================
 class CountdownSinglePlayer:
     word_list = word_list

@@ -18,17 +18,7 @@ class Wordle:
         self.in_word = []
         self.hidden = ['_','_','_','_','_']
         self.not_in = set()
-        
-    def reset(self):
-        self.attempts = 1
-        self.word = random.choice(self.word_list)
-        self.guesses = []
-        self.not_in_word = set()
-        self.guess = ''
-        self.in_word = []
-        self.hidden = ['_','_','_','_','_']
-        self.not_in = set()
-                       
+                              
     def print_menu(self):
         print('''
                             Welcome to Wordle! The world popular word guessing game. 
@@ -45,16 +35,6 @@ class Wordle:
         1. Play
         2. Quit
     ''')
-        
-    def check_menu_input(self, number):
-        '''Takes a number as input and continually asks the user for numeric input in the range
-        until valid input received. returns int as str. '''
-        choices = [str(i) for i in range(1,number+1)]
-        while True:
-            choice = input('Choose an option. ')
-            if choice in choices:
-                break
-        return choice        
 
     def definite_match(self):
         '''takes word and guess as input and returns correct letter
@@ -92,7 +72,7 @@ class Wordle:
         running = True
         while running:
             self.print_menu()       
-            choice = self.check_menu_input(2)
+            choice = input('Choose an option. ')
             if choice == '2':
                 running = False
             if choice == '1':

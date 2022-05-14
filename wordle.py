@@ -96,29 +96,28 @@ class Wordle:
             if choice == '2':
                 running = False
             if choice == '1':
-                while self.attempts < 6:
-                    print(f'Attempt {self.attempts} of 5. ', end='')
-                    self.check_guess_input()
-                    self.definite_match()
-                    if self.check_answer():
-                        print(f'You win! the word is {self.word}.')
-                        self.reset()
+                w = Wordle()
+                while w.attempts < 6:
+                    print(f'Attempt {w.attempts} of 5. ', end='')
+                    w.check_guess_input()
+                    w.definite_match()
+                    if w.check_answer():
+                        print(f'You win! the word is {w.word}.')
                         break
-                    elif not self.check_answer() and self.attempts == 5:
-                        print(f'You loose. The word was {self.word}.')
-                        self.reset()
+                    elif not w.check_answer() and w.attempts == 5:
+                        print(f'You loose. The word was {w.word}.')
                         break
                     else:
-                        self.guesses.append(self.guess)
-                        self.not_in_word.update(self.not_in) 
-                        print('Guessed words: ', ', '.join(self.guesses))
-                        print('Guessed letters that are not in the word: ', ', '.join(self.not_in_word))
-                        print('In word but in wrong position: ', ', '.join(self.in_word))
-                        self.in_word.clear()
-                        print('Secret Word: ', ' '.join(self.hidden))
+                        w.guesses.append(w.guess)
+                        w.not_in_word.update(w.not_in) 
+                        print('Guessed words: ', ', '.join(w.guesses))
+                        print('Guessed letters that are not in the word: ', ', '.join(w.not_in_word))
+                        print('In word but in wrong position: ', ', '.join(w.in_word))
+                        w.in_word.clear()
+                        print('Secret Word: ', ' '.join(w.hidden))
                         print('=======================================================')
                         print()
-                        self.attempts += 1
+                        w.attempts += 1
                         
 if __name__ == '__main__':
     Wordle().main()

@@ -21,8 +21,8 @@ class Wordle:
                               
     def print_menu(self):
         print('''
-                            Welcome to Wordle! The world popular word guessing game. 
-                            --------------------------------------------------------
+                            Welcome to Wordle! The world's popular word guessing game. 
+                            ----------------------------------------------------------
             
     Guess the secret 5-letter word in five attempts. Begin by typing in any 5-letter word and pressing enter.
 
@@ -41,25 +41,33 @@ class Wordle:
         position matches and a list of letters in word but not correct postion.'''
         editable_word = list(self.word).copy()
         editable_guess = list(self.guess).copy()
+        
+        # find exact letter matches
         for i in range(5):
             if self.guess[i] == self.word[i]:
                 self.hidden[i] = self.word[i]
                 editable_guess.remove(self.guess[i])
                 editable_word.remove(self.guess[i])
+                
+        # search for letters not in the word and add to not_in set
         for letter in editable_guess:
             if letter not in editable_word:
                 self.not_in.update(letter)
+                
+        # search for letters in the word but in the wrong position and add to the set
         for letter in editable_guess:
             if letter in editable_word:
                 self.in_word.append(letter)
                 editable_word.remove(letter)
 
     def check_answer(self):
+        '''Check if the guessed word is the correct answer'''
         if ''.join(self.hidden) == self.word:
             return True
         return False
         
     def check_guess_input(self):
+        '''Continually checks for valid word input and returns a valid word once entered'''
         while True:
             self.guess = input('Guess: ').lower()
             if self.guess not in self.word_list:

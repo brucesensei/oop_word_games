@@ -1,4 +1,4 @@
-# countdown.py fix the score in two player option. 
+# countdown.py 
 #================================imports==========================================
 import random
 import time
@@ -173,6 +173,7 @@ def two_player():
         print(f'Score for {t.player_1}: {t.player_1_score}')
         print(f'Score for {t.player_2}: {t.player_2_score}')
         t.letters.clear()
+        t.valid_words.clear()
         t.rounds += 1
     to_main = input('\nPress any key to return to the main menu.')
 
